@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinCure - Smart Financial Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom styles */
+        :root {
+            --primary: #6d28d9;
+            --primary-light: #8b5cf6;
+            --secondary: #a78bfa;
+            --dark: #1e293b;
+            --light: #f8fafc;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            background-color: var(--light);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .trial-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #8b5cf6;
+            color: white;
+            border-radius: 9999px;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        
+        .currency-input::before {
+            content: "₹";
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+        }
+        
+        .result-card {
+            background-color: #f3e8ff;
+        }
+        
+        .result-title {
+            color: #6d28d9;
+        }
+        
+        .result-value {
+            color: #5b21b6;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-piggy-bank text-2xl text-purple-600 mr-2"></i>
+                        <span class="text-xl font-bold text-purple-600">FinCure</span>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="#" class="border-purple-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Home</a>
+                        <a href="#features" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Features</a>
+                        <a href="#dashboard" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Dashboard</a>
+                        <a href="#analytics" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Analytics</a>
+                        <a href="#about" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">About</a>
+                    </div>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
+                    <a href="#login" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">Login</a>
+                    <a href="#signup" class="bg-purple-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-purple-700">Sign up</a>
+                </div>
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <!-- Mobile menu button -->
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <!-- Menu open: "hidden", Menu closed: "block" -->
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <!-- Menu open: "block", Menu closed: "hidden" -->
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div class="sm:hidden" id="mobile-menu">
+            <div class="pt-2 pb-3 space-y-1">
+                <a href="#" class="bg-purple-50 border-purple-500 text-purple-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
+                <a href="#features" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Features</a>
+                <a href="#dashboard" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Dashboard</a>
+                <a href="#analytics" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Analytics</a>
+                <a href="#about" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">About</a>
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <a href="#login" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">Login</a>
+                    <a href="#signup" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">Sign up</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="gradient-bg text-white">
+        <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+                    Take Control of Your Finances
+                </h1>
+                <p class="mt-6 max-w-lg mx-auto text-xl text-purple-100">
+                    FinCure helps you track spending, save money, and achieve your financial goals with smart tools designed for India.
+                </p>
+                <div class="mt-10 flex justify-center space-x-4">
+                    <a href="#signup" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-purple-600 bg-white hover:bg-purple-50">
+                        Get Started
+                    </a>
+                    <a href="#features" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-purple-500 bg-opacity-60 hover:bg-opacity-70">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div id="features" class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center">
+                <h2 class="text-base text-purple-600 font-semibold tracking-wide uppercase">Features</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Everything you need to manage your money
+                </p>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+                    Our comprehensive tools help you track, analyze, and optimize your finances.
+                </p>
+            </div>
+
+            <div class="mt-10">
+                <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
+                    <!-- Feature 1 -->
+                    <div class="feature-card bg-white p-6 rounded-lg shadow-md relative">
+                        <div class="trial-badge">New</div>
+                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-500 text-white">
+                            <i class="fas fa-tachometer-alt text-xl"></i>
+                        </div>
+                        <div class="mt-5">
+                            <h3 class="text-lg font-medium text-gray-900">Smart Dashboard</h3>
+                            <p class="mt-2 text-base text-gray-500">
+                                Visualize your financial health with an intuitive dashboard that shows all your accounts in one place.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="feature-card bg-white p-6 rounded-lg shadow-md relative">
+                        <div class="trial-badge">New</div>
+                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-500 text-white">
+                            <i class="fas fa-exchange-alt text-xl"></i>
+                        </div>
+                        <div class="mt-5">
+                            <h3 class="text-lg font-medium text-gray-900">Transaction Tracking</h3>
+                            <p class="mt-2 text-base text-gray-500">
+                                Monitor all your income and expenses with detailed transaction tracking and categorization.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="feature-card bg-white p-6 rounded-lg shadow-md relative">
+                        <div class="trial-badge">New</div>
+                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-500 text-white">
+                            <i class="fas fa-credit-card text-xl"></i>
+                        </div>
+                        <div class="mt-5">
+                            <h3 class="text-lg font-medium text-gray-900">UPI & Bank Accounts</h3>
+                            <p class="mt-2 text-base text-gray-500">
+                                Connect and manage all your UPI IDs, bank accounts, and investments in one secure place.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="feature-card bg-white p-6 rounded-lg shadow-md relative">
+                        <div class="trial-badge">New</div>
+                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-500 text-white">
+                            <i class="fas fa-credit-card text-xl"></i>
+                        </div>
+                        <div class="mt-5">
+                            <h3 class="text-lg font-medium text-gray-900">Credit Cards</h3>
+                            <p class="mt-2 text-base text-gray-500">
+                                Track your credit card spending, payments, and rewards all in one convenient location.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 5 -->
+                    <div class="feature-card bg-white p-6 rounded-lg shadow-md relative">
+                        <div class="trial-badge">New</div>
+                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-500 text-white">
+                            <i class="fas fa-chart-line text-xl"></i>
+                        </div>
+                        <div class="mt-5">
+                            <h3 class="text-lg font-medium text-gray-900">Budget Planning</h3>
+                            <p class="mt-2 text-base text-gray-500">
+                                Create and manage budgets that help you stay on track with your financial goals.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 6 -->
+                    <div class="feature-card bg-white p-6 rounded-lg shadow-md relative">
+                        <div class="trial-badge">New</div>
+                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-500 text-white">
+                            <i class="fas fa-money-bill-wave text-xl"></i>
+                        </div>
+                        <div class="mt-5">
+                            <h3 class="text-lg font-medium text-gray-900">Loan Tracking</h3>
+                            <p class="mt-2 text-base text-gray-500">
+                                Track and plan your loan repayments with tools to help you become debt-free faster.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div id="dashboard" class="py-12 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center mb-12">
+                <h2 class="text-base text-purple-600 font-semibold tracking-wide uppercase">Dashboard</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Your Financial Command Center
+                </p>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+                    Access all your financial information in one powerful dashboard.
+                </p>
+            </div>
+            
+            <div class="mt-10">
+                <div class="bg-white overflow-hidden shadow rounded-lg">
+                    <div class="px-4 py-5 sm:p-6">
+                        <div class="flex flex-col md:flex-row">
+                            <div class="md:w-1/2 p-6">
+                                <h3 class="text-lg font-medium text-gray-900">Complete Financial Overview</h3>
+                                <p class="mt-2 text-base text-gray-600">
+                                    Our dashboard gives you a complete picture of your financial health, with real-time updates and 
+                                    personalized insights to help you make better money decisions.
+                                </p>
+                                <ul class="mt-4 space-y-3">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                        <span class="text-gray-700">Real-time account balances</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                        <span class="text-gray-700">Spending trends and patterns</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                        <span class="text-gray-700">Budget progress tracking</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                        <span class="text-gray-700">Net worth calculation</span>
+                                    </li>
+                                </ul>
+                                <div class="mt-6">
+                                    <button id="exploreDashboardBtn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                                        Explore Dashboard
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 p-6 flex items-center justify-center bg-gray-50">
+                                <div class="relative w-full h-64 bg-purple-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-tachometer-alt text-5xl text-purple-500"></i>
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <span class="text-gray-500">Dashboard Preview</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics Section -->
+    <div id="analytics" class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center mb-12">
+                <h2 class="text-base text-purple-600 font-semibold tracking-wide uppercase">Analytics</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Powerful Financial Insights
+                </p>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+                    Deep dive into your financial data with our advanced analytics tools.
+                </p>
+            </div>
+            
+            <div class="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-2">
+                <!-- Category Analytics -->
+                <div class="bg-white overflow-hidden shadow rounded-lg">
+                    <div class="px-4 py-5 sm:p-6">
+                        <h3 class="text-lg font-medium text-gray-900">Category Analytics</h3>
+                        <p class="mt-2 text-base text-gray-600">
+                            Understand your spending patterns broken down by categories to identify saving opportunities.
+                        </p>
+                        <div class="mt-6">
+                            <button id="viewCategoryBtn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                                View Category Analytics
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Time Analytics -->
+                <div class="bg-white overflow-hidden shadow rounded-lg">
+                    <div class="px-4 py-5 sm:p-6">
+                        <h3 class="text-lg font-medium text-gray-900">Time-Based Analytics</h3>
+                        <p class="mt-2 text-base text-gray-600">
+                            Track your financial progress over time with month-to-month and year-to-year comparisons.
+                        </p>
+                        <div class="mt-6">
+                            <button id="viewTimeBtn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                                View Time Analytics
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Future Projections -->
+                <div class="bg-white overflow-hidden shadow rounded-lg">
+                    <div class="px-4 py-5 sm:p-6">
+                        <h3 class="text-lg font-medium text-gray-900">Future Projections</h3>
+                        <p class="mt-2 text-base text-gray-600">
+                            See where your current financial path is taking you with our future projection tools.
+                        </p>
+                        <div class="mt-6">
+                            <button id="viewProjectionsBtn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                                View Future Projections
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Financial Forecasts -->
+                <div class="bg-white overflow-hidden shadow rounded-lg">
+                    <div class="px-4 py-5 sm:p-6">
+                        <h3 class="text-lg font-medium text-gray-900">Financial Forecasts</h3>
+                        <p class="mt-2 text-base text-gray-600">
+                            Get AI-powered forecasts of your financial future based on your current spending and saving patterns.
+                        </p>
+                        <div class="mt-6">
+                            <button id="viewForecastsBtn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                                View Financial Forecasts
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calculator Section -->
+    <div class="py-12 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center mb-12">
+                <h2 class="text-base text-purple-600 font-semibold tracking-wide uppercase">Tools</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Financial Calculators
+                </p>
+            </div>
+            
+            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                        Savings Calculator
+                    </h3>
+                    <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                        Calculate how much you can save based on your income and expenses.
+                    </p>
+                </div>
+                <div class="px-4 py-5 sm:p-6">
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                        <div>
+                            <label for="income" class="block text-sm font-medium text-gray-700">Monthly Income</label>
+                            <div class="mt-1 relative rounded-md shadow-sm">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <span class="text-gray-500 sm:text-sm">₹</span>
+                                </div>
+                                <input type="number" name="income" id="income" class="focus:ring-purple-500 focus:border-purple-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md" placeholder="0.00">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="expenses" class="block text-sm font-medium text-gray-700">Monthly Expenses</label>
+                            <div class="mt-1 relative rounded-md shadow-sm">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <span class="text-gray-500 sm:text-sm">₹</span>
+                                </div>
+                                <input type="number" name="expenses" id="expenses" class="focus:ring-purple-500 focus:border-purple-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md" placeholder="0.00">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="savings-goal" class="block text-sm font-medium text-gray-700">Savings Goal</label>
+                            <div class="mt-1 relative rounded-md shadow-sm">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <span class="text-gray-500 sm:text-sm">₹</span>
+                                </div>
+                                <input type="number" name="savings-goal" id="savings-goal" class="focus:ring-purple-500 focus:border-purple-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md" placeholder="0.00">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <button id="calculateBtn" type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                            Calculate Savings
+                        </button>
+                    </div>
+                    
+                    <div id="resultsContainer" class="mt-6 result-card p-4 rounded-md hidden">
+                        <h4 class="text-sm font-medium result-title">Results</h4>
+                        <div class="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                            <div>
+                                <p class="text-sm result-title">Monthly Savings</p>
+                                <p id="monthlySavings" class="text-xl font-semibold result-value">₹0</p>
+                            </div>
+                            <div>
+                                <p class="text-sm result-title">Time to Reach Goal</p>
+                                <p id="timeToGoal" class="text-xl font-semibold result-value">0 months</p>
+                            </div>
+                            <div>
+                                <p class="text-sm result-title">Savings Rate</p>
+                                <p id="savingsRate" class="text-xl font-semibold result-value">0%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login" class="fixed z-50 inset-0 overflow-y-auto hidden">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
+                <div>
+                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-purple-100">
+                        <i class="fas fa-user text-purple-600"></i>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-5">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">Sign in to your account</h3>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <form action="#" method="POST">
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
+                            <div class="mt-1">
+                                <input type="email" name="email" id="email" class="shadow-sm focus:ring-purple-500 focus:border-purple-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="you@example.com">
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                            <div class="mt-1">
+                                <input type="password" name="password" id="password" class="shadow-sm focus:ring-purple-500 focus:border-purple-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-center">
+                            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                            <label for="remember-me" class="ml-2 block text-sm text-gray-700">Remember me</label>
+                        </div>
+                        <div class="mt-5">
+                            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                                Sign in
+                            </button>
+                        </div>
+                    </form>
+                    <div class="mt-4 text-center">
+                        <a href="#" class="text-sm font-medium text-purple-600 hover:text-purple-500">Forgot your password?</a>
+                    </div>
+                    <div class="mt-4 border-t border-gray-200 pt-4 text-center">
+                        <p class="text-sm text-gray-600">Don't have an account? <a href="#signup" class="font-medium text-purple-600 hover:text-purple-500">Sign up</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signup" class="fixed z-50 inset-0 overflow-y-auto hidden">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
+                <div>
+                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-purple-100">
+                        <i class="fas fa-user-plus text-purple-600"></i>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-5">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">Create your account</h3>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <form action="#" method="POST">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700">Full name</label>
+                            <div class="mt-1">
+                                <input type="text" name="name" id="name" class="shadow-sm focus:ring-purple-500 focus:border-purple-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
+                            <div class="mt-1">
+                                <input type="email" name="email" id="email" class="shadow-sm focus:ring-purple-500 focus:border-purple-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="you@example.com">
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                            <div class="mt-1">
+                                <input type="password" name="password" id="password" class="shadow-sm focus:ring-purple-500 focus:border-purple-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label for="confirm-password" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                            <div class="mt-1">
+                                <input type="password" name="confirm-password" id="confirm-password" class="shadow-sm focus:ring-purple-500 focus:border-purple-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-center">
+                            <input id="terms" name="terms" type="checkbox" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                            <label for="terms" class="ml-2 block text-sm text-gray-700">I agree to the <a href="#" class="text-purple-600 hover:text-purple-500">Terms and Conditions</a></label>
+                        </div>
+                        <div class="mt-5">
+                            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                                Create Account
+                            </button>
+                        </div>
+                    </form>
+                    <div class="mt-4 border-t border-gray-200 pt-4 text-center">
+                        <p class="text-sm text-gray-600">Already have an account? <a href="#login" class="font-medium text-purple-600 hover:text-purple-500">Sign in</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <div id="about" class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center mb-12">
+                <h2 class="text-base text-purple-600 font-semibold tracking-wide uppercase">About</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Our Mission
+                </p>
+            </div>
+            
+            <div class="prose prose-purple mx-auto">
+                <p>
+                    FinCure was founded with a simple goal: to make personal finance management accessible and effective for everyone in India. 
+                    We believe that financial health is just as important as physical health, and our tools are designed to help you 
+                    achieve both peace of mind and financial success.
+                </p>
+                <p>
+                    Our team of financial experts and technologists have created a platform that combines powerful analytics with 
+                    intuitive design, making it easy for anyone to take control of their money.
+                </p>
+                <p>
+                    Whether you're saving for a dream vacation, paying off debt, or just trying to understand where your money goes each month, 
+                    FinCure provides the tools and insights you need to make informed financial decisions.
+                </p>
+            </div>
+            
+            <div class="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                <!-- Team Member 1 -->
+                <div class="pt-6">
+                    <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8 h-full">
+                        <div class="-mt-6">
+                            <div class="flex items-center justify-center h-16 w-16 rounded-md bg-purple-500 text-white mx-auto">
+                                <i class="fas fa-user-tie text-xl"></i>
+                            </div>
+                            <h3 class="mt-4 text-lg font-medium text-gray-900 text-center">Ashmit Paul</h3>
+                            <p class="mt-1 text-sm text-gray-500 text-center">Co-Founder & CEO</p>
+                            <p class="mt-3 text-base text-gray-600 text-center">
+                                Financial expert with 15+ years experience in banking and fintech.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 2 -->
+                <div class="pt-6">
+                    <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8 h-full">
+                        <div class="-mt-6">
+                            <div class="flex items-center justify-center h-16 w-16 rounded-md bg-purple-500 text-white mx-auto">
+                                <i class="fas fa-code text-xl"></i>
+                            </div>
+                            <h3 class="mt-4 text-lg font-medium text-gray-900 text-center">Arpan Chakraborty</h3>
+                            <p class="mt-1 text-sm text-gray-500 text-center">Co-Founder & CTO</p>
+                            <p class="mt-3 text-base text-gray-600 text-center">
+                                Technology leader specializing in secure financial platforms.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 3 -->
+                <div class="pt-6">
+                    <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8 h-full">
+                        <div class="-mt-6">
+                            <div class="flex items-center justify-center h-16 w-16 rounded-md bg-purple-500 text-white mx-auto">
+                                <i class="fas fa-chart-pie text-xl"></i>
+                            </div>
+                            <h3 class="mt-4 text-lg font-medium text-gray-900 text-center">Arkaprabho Mondal</h3>
+                            <p class="mt-1 text-sm text-gray-500 text-center">Head of Analytics</p>
+                            <p class="mt-3 text-base text-gray-600 text-center">
+                                Data scientist creating powerful financial insights.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 4 -->
+                <div class="pt-6">
+                    <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8 h-full">
+                        <div class="-mt-6">
+                            <div class="flex items-center justify-center h-16 w-16 rounded-md bg-purple-500 text-white mx-auto">
+                                <i class="fas fa-cogs text-xl"></i>
+                            </div>
+                            <h3 class="mt-4 text-lg font-medium text-gray-900 text-center">Ashish</h3>
+                            <p class="mt-1 text-sm text-gray-500 text-center">Technical Co-head</p>
+                            <p class="mt-3 text-base text-gray-600 text-center">
+                                Experience in technical insights of finance.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="py-12 bg-purple-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center mb-12">
+                <h2 class="text-base text-purple-600 font-semibold tracking-wide uppercase">Testimonials</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    What our users say
+                </p>
+            </div>
+            
+            <div class="mt-10 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                <!-- Testimonial 1 -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/32.jpg" alt="User testimonial">
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-sm font-medium text-gray-900">Ananya Desai</h4>
+                            <p class="text-sm text-gray-500">Mumbai</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-gray-600">
+                            "FinCure helped me save ₹20,000 in just 3 months by showing me where I was overspending. The budgeting tools are incredibly easy to use!"
+                        </p>
+                    </div>
+                    <div class="mt-4 flex">
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/45.jpg" alt="User testimonial">
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-sm font-medium text-gray-900">Vikram Joshi</h4>
+                            <p class="text-sm text-gray-500">Bangalore</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-gray-600">
+                            "As a freelancer, tracking my irregular income was always challenging. FinCure's analytics gave me the clarity I needed to manage my cash flow."
+                        </p>
+                    </div>
+                    <div class="mt-4 flex">
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/68.jpg" alt="User testimonial">
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-sm font-medium text-gray-900">Neha Gupta</h4>
+                            <p class="text-sm text-gray-500">Delhi</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-gray-600">
+                            "The loan tracking feature helped me pay off my education loan 6 months early! I can't recommend FinCure enough for anyone with debt."
+                        </p>
+                    </div>
+                    <div class="mt-4 flex">
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star-half-alt text-yellow-400"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="gradient-bg text-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 lg:py-24">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
+                <div>
+                    <h2 class="text-3xl font-extrabold tracking-tight sm:text-4xl">
+                        Ready to take control of your finances?
+                    </h2>
+                    <p class="mt-3 max-w-3xl text-lg text-purple-100">
+                        Join thousands of Indians who are already managing their money smarter with FinCure.
+                    </p>
+                    <div class="mt-8 sm:flex">
+                        <div class="rounded-md shadow">
+                            <a href="#signup" class="flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-purple-600 bg-white hover:bg-purple-50">
+                                Get started for free
+                            </a>
+                        </div>
+                        <div class="mt-3 sm:mt-0 sm:ml-3">
+                            <a href="#features" class="flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-purple-500 bg-opacity-60 hover:bg-opacity-70">
+                                Learn more
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 lg:mt-0">
+                    <div class="bg-white bg-opacity-10 p-6 rounded-lg">
+                        <h3 class="text-xl font-medium mb-4">Why choose FinCure?</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle mt-1 mr-2 text-purple-200"></i>
+                                <span>100% secure - Your data is always protected</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle mt-1 mr-2 text-purple-200"></i>
+                                <span>Designed specifically for Indian financial needs</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle mt-1 mr-2 text-purple-200"></i>
+                                <span>Works with all major Indian banks and UPI apps</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle mt-1 mr-2 text-purple-200"></i>
+                                <span>No hidden fees - completely free to use</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Product</h3>
+                    <ul class="mt-4 space-y-4">
+                        <li><a href="#features" class="text-base text-gray-300 hover:text-white">Features</a></li>
+                        <li><a href="#dashboard" class="text-base text-gray-300 hover:text-white">Dashboard</a></li>
+                        <li><a href="#analytics" class="text-base text-gray-300 hover:text-white">Analytics</a></li>
+                        <li><a href="#" class="text-base text-gray-300 hover:text-white">Pricing</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Company</h3>
+                    <ul class="mt-4 space-y-4">
+                        <li><a href="#about" class="text-base text-gray-300 hover:text-white">About</a></li>
+                        <li><a href="#" class="text-base text-gray-300 hover:text-white">Blog</a></li>
+                        <li><a href="#" class="text-base text-gray-300 hover:text-white">Careers</a></li>
+                        <li><a href="#" class="text-base text-gray-300 hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Legal</h3>
+                    <ul class="mt-4 space-y-4">
+                        <li><a href="#" class="text-base text-gray-300 hover:text-white">Privacy</a></li>
+                        <li><a href="#" class="text-base text-gray-300 hover:text-white">Terms</a></li>
+                        <li><a href="#" class="text-base text-gray-300 hover:text-white">Security</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Connect</h3>
+                    <div class="mt-4 flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                    <div class="mt-6">
+                        <h4 class="text-sm font-medium text-gray-400">Download our app</h4>
+                        <div class="mt-2 flex space-x-4">
+                            <a href="#">
+                                <img class="h-10" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/1200px-Google_Play_Store_badge_EN.svg.png" alt="Google Play">
+                            </a>
+                            <a href="#">
+                                <img class="h-10" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/1200px-Download_on_the_App_Store_Badge.svg.png" alt="App Store">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between">
+                <p class="text-base text-gray-400">
+                    &copy; 2023 FinCure. All rights reserved.
+                </p>
+                <div class="mt-4 md:mt-0">
+                    <p class="text-base text-gray-400">
+                        Made with <i class="fas fa-heart text-red-500"></i> in India
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.querySelector('button[aria-controls="mobile-menu"]');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuButton.addEventListener('click', function() {
+                const expanded = this.getAttribute('aria-expanded') === 'true';
+                this.setAttribute('aria-expanded', !expanded);
+                mobileMenu.classList.toggle('hidden');
+                
+                // Toggle the SVG icons
+                const menuIcon = this.querySelector('.block');
+                const closeIcon = this.querySelector('.hidden');
+                menuIcon.classList.toggle('block');
+                menuIcon.classList.toggle('hidden');
+                closeIcon.classList.toggle('hidden');
+                closeIcon.classList.toggle('block');
+            });
+            
+            // Modal toggles
+            function setupModal(modalId, triggerSelectors) {
+                const modal = document.getElementById(modalId);
+                const triggers = document.querySelectorAll(triggerSelectors);
+                const closeButtons = modal ? modal.querySelectorAll('[data-dismiss]') : [];
+                
+                triggers.forEach(trigger => {
+                    trigger.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        modal.classList.remove('hidden');
+                    });
+                });
+                
+                closeButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        modal.classList.add('hidden');
+                    });
+                });
+                
+                // Close when clicking outside modal content
+                if (modal) {
+                    modal.addEventListener('click', function(e) {
+                        if (e.target === modal) {
+                            modal.classList.add('hidden');
+                        }
+                    });
+                }
+            }
+            
+            setupModal('login', 'a[href="#login"]');
+            setupModal('signup', 'a[href="#signup"]');
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Calculator functionality
+            const calculateBtn = document.getElementById('calculateBtn');
+            if (calculateBtn) {
+                calculateBtn.addEventListener('click', function() {
+                    const income = parseFloat(document.getElementById('income').value) || 0;
+                    const expenses = parseFloat(document.getElementById('expenses').value) || 0;
+                    const savingsGoal = parseFloat(document.getElementById('savings-goal').value) || 0;
+                    
+                    const monthlySavings = income - expenses;
+                    const savingsRate = income > 0 ? (monthlySavings / income) * 100 : 0;
+                    const timeToGoal = monthlySavings > 0 ? Math.ceil(savingsGoal / monthlySavings) : 0;
+                    
+                    document.getElementById('monthlySavings').textContent = `₹${monthlySavings.toLocaleString('en-IN')}`;
+                    document.getElementById('savingsRate').textContent = `${savingsRate.toFixed(1)}%`;
+                    document.getElementById('timeToGoal').textContent = `${timeToGoal} ${timeToGoal === 1 ? 'month' : 'months'}`;
+                    
+                    document.getElementById('resultsContainer').classList.remove('hidden');
+                });
+            }
+            
+            // Dashboard and analytics buttons functionality
+            const exploreDashboardBtn = document.getElementById('exploreDashboardBtn');
+            const viewCategoryBtn = document.getElementById('viewCategoryBtn');
+            const viewTimeBtn = document.getElementById('viewTimeBtn');
+            const viewProjectionsBtn = document.getElementById('viewProjectionsBtn');
+            const viewForecastsBtn = document.getElementById('viewForecastsBtn');
+            
+            function showAlert(message) {
+                alert(message);
+            }
+            
+            if (exploreDashboardBtn) {
+                exploreDashboardBtn.addEventListener('click', function() {
+                    showAlert("Dashboard feature will be shown here with interactive charts and financial overview.");
+                });
+            }
+            
+            if (viewCategoryBtn) {
+                viewCategoryBtn.addEventListener('click', function() {
+                    showAlert("Category analytics will display your spending patterns by different categories.");
+                });
+            }
+            
+            if (viewTimeBtn) {
+                viewTimeBtn.addEventListener('click', function() {
+                    showAlert("Time-based analytics will show your financial progress over different time periods.");
+                });
+            }
+            
+            if (viewProjectionsBtn) {
+                viewProjectionsBtn.addEventListener('click', function() {
+                    showAlert("Future projections will estimate where your current financial path is taking you.");
+                });
+            }
+            
+            if (viewForecastsBtn) {
+                viewForecastsBtn.addEventListener('click', function() {
+                    showAlert("Financial forecasts will provide AI-powered predictions based on your spending and saving patterns.");
+                });
+            }
+        });
+    </script>
+</body>
+</html>

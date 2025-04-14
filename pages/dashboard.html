@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - FinCure</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css"> <!-- Adjust the path as necessary -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js for charts -->
+</head>
+<body>
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-piggy-bank text-2xl text-purple-600 mr-2"></i>
+                        <span class="text-xl font-bold text-purple-600">FinCure</span>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="../index.html" class="text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Home</a>
+                        <a href="login.html" class="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Login</a>
+                        <a href="signup.html" class="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-extrabold tracking-tight text-center">Your Financial Overview</h2>
+        
+        <div class="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
+            <!-- Total Balance Card -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-medium">Total Balance</h3>
+                <p class="mt-2 text-2xl font-bold">₹50,000</p>
+            </div>
+            <!-- Monthly Income Card -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-medium">Monthly Income</h3>
+                <p class="mt-2 text-2xl font-bold">₹30,000</p>
+            </div>
+            <!-- Monthly Expenses Card -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-medium">Monthly Expenses</h3>
+                <p class="mt-2 text-2xl font-bold">₹20,000</p>
+            </div>
+        </div>
+
+        <div class="mt-10">
+            <h3 class="text-lg font-medium">Spending Trends</h3>
+            <canvas id="spendingChart" class="mt-4"></canvas>
+        </div>
+
+        <div class="mt-10">
+            <h3 class="text-lg font-medium">Recent Transactions</h3>
+            <table class="min-w-full mt-4 bg-white">
+                <thead>
+                    <tr>
+                        <th class="py-2 px-4 border-b">Date</th>
+                        <th class="py-2 px-4 border-b">Description</th>
+                        <th class="py-2 px-4 border-b">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="py-2 px-4 border-b">01/01/2023</td>
+                        <td class="py-2 px-4 border-b">Salary</td>
+                        <td class="py-2 px-4 border-b">+₹30,000</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 px-4 border-b">02/01/2023</td>
+                        <td class="py-2 px-4 border-b">Groceries</td>
+                        <td class="py-2 px-4 border-b">-₹2,000</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 px-4 border-b">03/01/2023</td>
+                        <td class="py-2 px-4 border-b">Utilities</td>
+                        <td class="py-2 px-4 border-b">-₹1,500</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Chart.js code to create a spending trends chart
+        const ctx = document.getElementById('spendingChart').getContext('2d');
+        const spendingChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                datasets: [{
+                    label: 'Monthly Spending',
+                    data: [2000, 2500, 3000, 1500, 4000, 3500, 3000],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 2,
+                    fill: true,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

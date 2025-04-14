@@ -1,0 +1,60 @@
+/* Custom styles */
+:root {
+    --primary: #6d28d9;
+    --primary-light: #8b5cf6;
+    --secondary: #a78bfa;
+    --dark: #1e293b;
+    --light: #f8fafc;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--dark);
+    background-color: var(--light);
+}
+
+.gradient-bg {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+}
+
+.feature-card {
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.trial-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #8b5cf6;
+    color: white;
+    border-radius: 9999px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.currency-input::before {
+    content: "₹";
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+}
+
+.result-card {
+    background-color: #f3e8ff;
+}
+
+.result-title {
+    color: #6d28d9;
+}
+
+.result-value {
+    color: #5b21b6;
+}
